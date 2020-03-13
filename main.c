@@ -1,10 +1,13 @@
 #include<stdio.h>
 #include "Parser.h"
+#include "CodeWriter.h"
+
+int write_cnt = 0;
 
 void main(int argc, char *argv[]){
     FILE *src_f, *asm_f;
-    char command[3][15], asm_name[50];
-    int i = 0;
+    char command[3][15], asm_name[50] = {'\0'};
+    int i = 0, cmd_type, cmd_size = sizeof command[0] / sizeof command[0][0];
 
     // asmファイルの名前
     while (argv[1][i] != '.'){
@@ -19,20 +22,20 @@ void main(int argc, char *argv[]){
 
     // EOFまで一行ずつ処理
     while (1){
-        if (!advance(src_f, command)) break;
+        if (!advance(src_f, cmd_size, command)) break;
 
-        switch (commandType(command))
+        cmd_type = commandType(cmd_size, command);
+        switch (cmd_type)
         {
         case C_ARITHMETIC:
-            /* code */
+            writeArithmetic(asm_f, arg1(cmd_size, command, C_ARITHMETIC));
             break;
         
         case C_PUSH:
-            /* code */
+            writePushPop(asm_f, C_PUSH, arg1(cmd_size, command, C_PUSH), arg2(cmd_size, command, C_PUSH));
             break;
         
         case C_POP:
-            /* code */
             break;
         
         default:
@@ -40,10 +43,14 @@ void main(int argc, char *argv[]){
         }
     }
 
+    // 無限ループ
+    fprintf(asm_f, "(INFINITE_LOOP)\n");
+    fprintf(asm_f, "@INFINITE_LOOP\n");
+    fprintf(asm_f, "0;JMP\n");
+
     // ファイルクローズ
     fclose(src_f);
     fclose(asm_f);
-
 
     return;
 }
