@@ -31,6 +31,12 @@ int advance(FILE *src_f, int cmd_size, char command[][cmd_size]){
 int commandType(int cmd_size, char command[][cmd_size]){
     if(strcmp(command[0], "push") == 0) return C_PUSH;
     else if (strcmp(command[0], "pop") == 0) return C_POP;
+    else if (strcmp(command[0], "label") == 0) return C_LABEL;
+    else if (strcmp(command[0], "goto") == 0) return C_GOTO;
+    else if (strcmp(command[0], "if-goto") == 0) return C_IF;
+    else if (strcmp(command[0], "function") == 0) return C_FUNCTION;
+    else if (strcmp(command[0], "call") == 0) return C_CALL;
+    else if (strcmp(command[0], "return") == 0) return C_RETURN;
     else return C_ARITHMETIC;
 }
 
@@ -59,7 +65,7 @@ int arg1(int cmd_size, char command[][cmd_size], int cmd_type){
     }
 }
 
-int arg2(int cmd_size, char command[][cmd_size], int cmd_type){
+int arg2(int cmd_size, char command[][cmd_size]){
     int num = atoi(command[2]);
     return num;
 }

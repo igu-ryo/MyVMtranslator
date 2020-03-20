@@ -38,10 +38,8 @@ enum{
 int advance(FILE *src_f, int cmd_size, char command[][cmd_size]);
 int commandType(int cmd_size, char command[][cmd_size]);
 int arg1(int cmd_size, char command[][cmd_size], int cmd_type);
-int arg2(int cmd_size, char command[][cmd_size], int cmd_type);
+int arg2(int cmd_size, char command[][cmd_size]);
 void strZero(char command[], int cmd_size);
 int isRtnCmnt(char raw_command[], int index);
-
-extern int write_cnt;
 
 #endif
